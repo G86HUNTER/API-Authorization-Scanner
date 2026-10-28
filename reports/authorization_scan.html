@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Authorization Security Testing Framework — Scan Report</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+  h1 { font-size: 1.8rem; color: #58a6ff; margin-bottom: .25rem; }
+  h2 { font-size: 1.2rem; color: #58a6ff; margin: 2rem 0 1rem; border-bottom: 1px solid #30363d; padding-bottom: .5rem; }
+  .meta { color: #8b949e; font-size: .85rem; margin-bottom: 1.5rem; }
+  .meta span { margin-right: 1.5rem; }
+  .scan-status { display:inline-block; padding:.3rem .8rem; border-radius:4px; font-weight:600; font-size:.85rem; background:#38a16922; color:#38a169; border:1px solid #38a169; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0 2rem; }
+  .summary-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1rem; text-align: center; }
+  .summary-card .num { font-size: 2rem; font-weight: 700; }
+  .summary-card .label { font-size: .75rem; color: #8b949e; text-transform: uppercase; letter-spacing: .05em; }
+  .vuln   { color: #e53e3e; }
+  .safe   { color: #38a169; }
+  .warn   { color: #d69e2e; }
+  .info   { color: #3182ce; }
+  .grey   { color: #718096; }
+  .finding-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .finding-header { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .vuln-type { font-weight: 700; font-size: 1.1rem; color: #e2e8f0; }
+  .badge { display:inline-block; padding:.2rem .7rem; border-radius:4px; color:#fff; font-size:.75rem; font-weight:600; }
+  .confidence { font-size:.8rem; color:#8b949e; margin-left:auto; }
+  .finding-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: .85rem; }
+  .finding-table td { padding: .4rem .75rem; border-bottom: 1px solid #21262d; vertical-align: top; }
+  .finding-table td:first-child { color: #8b949e; width: 160px; white-space: nowrap; }
+  .section-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: #58a6ff; margin: 1rem 0 .25rem; }
+  pre { background: #0d1117; border: 1px solid #21262d; border-radius: 4px; padding: .75rem; overflow-x: auto; font-size: .8rem; }
+  code { font-family: 'Consolas', 'Courier New', monospace; }
+  .remediation { color: #63b3ed; font-size:.9rem; }
+  .no-findings { color: #8b949e; font-style: italic; }
+  .alert-error { background: #e53e3e22; border: 1px solid #e53e3e; border-radius: 6px; padding: 1rem; color: #fc8181; margin-bottom: 1rem; }
+  .limitations { background: #d69e2e18; border: 1px solid #d69e2e; border-radius: 6px; padding: 1rem; margin: 1.5rem 0; font-size: .85rem; color: #fbd38d; }
+  p { margin: .5rem 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🔒 API Authorization Security Testing Framework</h1>
+  <div class="meta">
+    <span>Scanner v2.0.0</span>
+    <span>Generated: 2026-10-28T17:33:33.998820+00:00</span>
+    <span>Target: http://127.0.0.1:5000</span>
+    <span class="scan-status">COMPLETED</span>
+  </div>
+
+  <div class="limitations">
+    ⚠️ <strong>Limitations:</strong> This tool tests against intentionally vulnerable local fixtures only. Findings are preliminary estimates — not confirmed production vulnerabilities. Manual validation by a qualified security professional is required.
+  </div>
+
+  
+
+  <h2>Scan Summary</h2>
+  <div class="summary-grid">
+    <div class="summary-card"><div class="num">13</div><div class="label">Total Tests</div></div>
+    <div class="summary-card"><div class="num vuln">5</div><div class="label">Potential Vulns</div></div>
+    <div class="summary-card"><div class="num safe">4</div><div class="label">Not Detected</div></div>
+    <div class="summary-card"><div class="num warn">4</div><div class="label">Inconclusive</div></div>
+    <div class="summary-card"><div class="num vuln">0</div><div class="label">Errors</div></div>
+    <div class="summary-card"><div class="num grey">0</div><div class="label">Skipped</div></div>
+  </div>
+
+  <h2>Findings</h2>
+  
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BOLA</span>
+                    <span class="badge" style="background:#e53e3e">POTENTIAL VULNERABILITY</span>
+                    <span class="badge" style="background:#e53e3e">High</span>
+                    <span class="confidence">Confidence: High</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>d4fc3f71-df61-4485-bcac-4741fe0aa082</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/documents/101</code></td></tr>
+                    <tr><td>Test Identity</td><td>bob (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only the document owner or admin can access the document.</td></tr>
+                    <tr><td>HTTP Status</td><td>200</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.656875+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>Identity ID 2 accessed object 101 owned by ID 1 and received HTTP 200 with matching ownership evidence in the response body.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "content": "Confidential content owned by Alice.",
+  "document_id": 101,
+  "owner_id": 1,
+  "requested_by": 2,
+  "title": "Alice's Report"
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{
+  "owner_id_in_response": 1,
+  "requester_id_in_response": 2
+}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce object-level authorization on every request. Verify that the authenticated user is permitted to access the requested object ID specifically. Never rely on the client to supply authorization context.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BOLA</span>
+                    <span class="badge" style="background:#d69e2e">INCONCLUSIVE</span>
+                    <span class="badge" style="background:#d69e2e">Medium</span>
+                    <span class="confidence">Confidence: Medium</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>13ee3252-945f-4677-a5e1-69f77e0a1d0d</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/documents/101</code></td></tr>
+                    <tr><td>Test Identity</td><td>alice (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only the document owner or admin can access the document.</td></tr>
+                    <tr><td>HTTP Status</td><td>200</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.707555+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>Identity ID 1 received HTTP 200 for object 101, but ownership evidence was ambiguous: owner_id=1, requested_by=1.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "content": "Confidential content owned by Alice.",
+  "document_id": 101,
+  "owner_id": 1,
+  "requested_by": 1,
+  "title": "Alice's Report"
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce object-level authorization on every request. Verify that the authenticated user is permitted to access the requested object ID specifically. Never rely on the client to supply authorization context.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BOLA</span>
+                    <span class="badge" style="background:#d69e2e">INCONCLUSIVE</span>
+                    <span class="badge" style="background:#d69e2e">Medium</span>
+                    <span class="confidence">Confidence: Medium</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>cff60380-d95f-4740-81af-754c3badee19</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/documents/102</code></td></tr>
+                    <tr><td>Test Identity</td><td>bob (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only the document owner or admin can access the document.</td></tr>
+                    <tr><td>HTTP Status</td><td>200</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.737365+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>Identity ID 2 received HTTP 200 for object 102, but ownership evidence was ambiguous: owner_id=2, requested_by=2.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "content": "Confidential content owned by Bob.",
+  "document_id": 102,
+  "owner_id": 2,
+  "requested_by": 2,
+  "title": "Bob's Report"
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce object-level authorization on every request. Verify that the authenticated user is permitted to access the requested object ID specifically. Never rely on the client to supply authorization context.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BOLA</span>
+                    <span class="badge" style="background:#e53e3e">POTENTIAL VULNERABILITY</span>
+                    <span class="badge" style="background:#e53e3e">High</span>
+                    <span class="confidence">Confidence: High</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>66c92781-e6a9-4367-8ae8-906618a2df7e</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/documents/102</code></td></tr>
+                    <tr><td>Test Identity</td><td>alice (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only the document owner or admin can access the document.</td></tr>
+                    <tr><td>HTTP Status</td><td>200</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.767357+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>Identity ID 1 accessed object 102 owned by ID 2 and received HTTP 200 with matching ownership evidence in the response body.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "content": "Confidential content owned by Bob.",
+  "document_id": 102,
+  "owner_id": 2,
+  "requested_by": 1,
+  "title": "Bob's Report"
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{
+  "owner_id_in_response": 2,
+  "requester_id_in_response": 1
+}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce object-level authorization on every request. Verify that the authenticated user is permitted to access the requested object ID specifically. Never rely on the client to supply authorization context.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BOLA</span>
+                    <span class="badge" style="background:#38a169">NOT DETECTED</span>
+                    <span class="badge" style="background:#718096">UNCONFIRMED</span>
+                    <span class="confidence">Confidence: High</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>2436ea08-e566-4714-a9fe-abe7b88b3882</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/documents/secure/101</code></td></tr>
+                    <tr><td>Test Identity</td><td>bob (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only the document owner or admin can access the document.</td></tr>
+                    <tr><td>HTTP Status</td><td>403</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.794673+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>Attacker (ID 2) received HTTP 403 for object 101 owned by ID 1. Authorization appears to be enforced.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "document_id": 101,
+  "error": "Access denied. You do not own this resource.",
+  "owner_id": 1,
+  "requested_by": 2
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce object-level authorization on every request. Verify that the authenticated user is permitted to access the requested object ID specifically. Never rely on the client to supply authorization context.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BOLA</span>
+                    <span class="badge" style="background:#d69e2e">INCONCLUSIVE</span>
+                    <span class="badge" style="background:#718096">UNCONFIRMED</span>
+                    <span class="confidence">Confidence: Low</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>49ac5f22-68cb-4835-914b-7960b07a28ba</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/documents/secure/101</code></td></tr>
+                    <tr><td>Test Identity</td><td>alice (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only the document owner or admin can access the document.</td></tr>
+                    <tr><td>HTTP Status</td><td>200</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.817341+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>Owner (ID 2) received HTTP 403 for object 101. Cannot establish ownership baseline.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "content": "Confidential content owned by Alice.",
+  "document_id": 101,
+  "owner_id": 1,
+  "requested_by": 1,
+  "title": "Alice's Report"
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce object-level authorization on every request. Verify that the authenticated user is permitted to access the requested object ID specifically. Never rely on the client to supply authorization context.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BOLA</span>
+                    <span class="badge" style="background:#d69e2e">INCONCLUSIVE</span>
+                    <span class="badge" style="background:#718096">UNCONFIRMED</span>
+                    <span class="confidence">Confidence: Low</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>1885ebff-5846-4ea4-9d64-4d95dbd0c79a</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/documents/secure/102</code></td></tr>
+                    <tr><td>Test Identity</td><td>bob (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only the document owner or admin can access the document.</td></tr>
+                    <tr><td>HTTP Status</td><td>200</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.839778+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>Owner (ID 1) received HTTP 403 for object 102. Cannot establish ownership baseline.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "content": "Confidential content owned by Bob.",
+  "document_id": 102,
+  "owner_id": 2,
+  "requested_by": 2,
+  "title": "Bob's Report"
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce object-level authorization on every request. Verify that the authenticated user is permitted to access the requested object ID specifically. Never rely on the client to supply authorization context.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BOLA</span>
+                    <span class="badge" style="background:#38a169">NOT DETECTED</span>
+                    <span class="badge" style="background:#718096">UNCONFIRMED</span>
+                    <span class="confidence">Confidence: High</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>5f7c3a32-0241-45da-af0a-131f132629ef</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/documents/secure/102</code></td></tr>
+                    <tr><td>Test Identity</td><td>alice (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only the document owner or admin can access the document.</td></tr>
+                    <tr><td>HTTP Status</td><td>403</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.865719+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>Attacker (ID 1) received HTTP 403 for object 102 owned by ID 2. Authorization appears to be enforced.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "document_id": 102,
+  "error": "Access denied. You do not own this resource.",
+  "owner_id": 2,
+  "requested_by": 1
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce object-level authorization on every request. Verify that the authenticated user is permitted to access the requested object ID specifically. Never rely on the client to supply authorization context.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BFLA</span>
+                    <span class="badge" style="background:#e53e3e">POTENTIAL VULNERABILITY</span>
+                    <span class="badge" style="background:#e53e3e">High</span>
+                    <span class="confidence">Confidence: High</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>69cf3a32-955d-4689-b654-a063ba24aeb6</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/admin</code></td></tr>
+                    <tr><td>Test Identity</td><td>bob (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only users with 'admin' role can access this endpoint.</td></tr>
+                    <tr><td>HTTP Status</td><td>200</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.890321+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>User with role 'user' accessed /api/admin (required role: 'admin') and received HTTP 200. Response body confirms caller_role vs required_role mismatch.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "caller_role": "user",
+  "message": "Admin function accessed.",
+  "requested_by": 2,
+  "required_role": "admin",
+  "warning": "INTENTIONALLY VULNERABLE: role not enforced."
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{
+  "caller_role_in_response": "user",
+  "required_role_in_response": "admin"
+}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce server-side role and permission checks for every sensitive function or administrative endpoint. Deny access explicitly when the caller lacks the required role. Do not rely on UI-level hiding of admin controls.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BFLA</span>
+                    <span class="badge" style="background:#e53e3e">POTENTIAL VULNERABILITY</span>
+                    <span class="badge" style="background:#e53e3e">High</span>
+                    <span class="confidence">Confidence: High</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>e75d9d92-0b6b-465b-95f0-a79c2fdbabd9</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/admin</code></td></tr>
+                    <tr><td>Test Identity</td><td>alice (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only users with 'admin' role can access this endpoint.</td></tr>
+                    <tr><td>HTTP Status</td><td>200</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.903595+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>User with role 'user' accessed /api/admin (required role: 'admin') and received HTTP 200. Response body confirms caller_role vs required_role mismatch.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "caller_role": "user",
+  "message": "Admin function accessed.",
+  "requested_by": 1,
+  "required_role": "admin",
+  "warning": "INTENTIONALLY VULNERABLE: role not enforced."
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{
+  "caller_role_in_response": "user",
+  "required_role_in_response": "admin"
+}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce server-side role and permission checks for every sensitive function or administrative endpoint. Deny access explicitly when the caller lacks the required role. Do not rely on UI-level hiding of admin controls.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BFLA</span>
+                    <span class="badge" style="background:#e53e3e">POTENTIAL VULNERABILITY</span>
+                    <span class="badge" style="background:#e53e3e">High</span>
+                    <span class="confidence">Confidence: High</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>a6a1a374-336d-49e2-b41d-469d2f1ee9f9</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/admin</code></td></tr>
+                    <tr><td>Test Identity</td><td>carol (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only users with 'admin' role can access this endpoint.</td></tr>
+                    <tr><td>HTTP Status</td><td>200</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.916324+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>User with role 'user' accessed /api/admin (required role: 'admin') and received HTTP 200. Response body confirms caller_role vs required_role mismatch.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "caller_role": "user",
+  "message": "Admin function accessed.",
+  "requested_by": 3,
+  "required_role": "admin",
+  "warning": "INTENTIONALLY VULNERABLE: role not enforced."
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{
+  "caller_role_in_response": "user",
+  "required_role_in_response": "admin"
+}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce server-side role and permission checks for every sensitive function or administrative endpoint. Deny access explicitly when the caller lacks the required role. Do not rely on UI-level hiding of admin controls.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BFLA</span>
+                    <span class="badge" style="background:#38a169">NOT DETECTED</span>
+                    <span class="badge" style="background:#718096">UNCONFIRMED</span>
+                    <span class="confidence">Confidence: High</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>7c6ed184-75bd-4ae3-934f-447ef9d4f76e</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/admin/secure</code></td></tr>
+                    <tr><td>Test Identity</td><td>bob (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only users with 'admin' role can access this endpoint.</td></tr>
+                    <tr><td>HTTP Status</td><td>403</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.960028+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>User with role 'user' received HTTP 403 for /api/admin/secure (required role: 'admin'). Role enforcement appears to be working.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "caller_role": "user",
+  "error": "Access denied. Admin role required.",
+  "required_role": "admin"
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce server-side role and permission checks for every sensitive function or administrative endpoint. Deny access explicitly when the caller lacks the required role. Do not rely on UI-level hiding of admin controls.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-header">
+                    <span class="vuln-type">BFLA</span>
+                    <span class="badge" style="background:#38a169">NOT DETECTED</span>
+                    <span class="badge" style="background:#718096">UNCONFIRMED</span>
+                    <span class="confidence">Confidence: High</span>
+                </div>
+                <table class="finding-table">
+                    <tr><td>Finding ID</td><td><code>a5fce999-b79f-4e76-88dc-c25475f6c5b3</code></td></tr>
+                    <tr><td>Endpoint</td><td><code>GET /api/admin/secure</code></td></tr>
+                    <tr><td>Test Identity</td><td>alice (role: user)</td></tr>
+                    <tr><td>Expected Policy</td><td>Only users with 'admin' role can access this endpoint.</td></tr>
+                    <tr><td>HTTP Status</td><td>403</td></tr>
+                    <tr><td>Timestamp</td><td>2026-10-28T17:33:33.997666+00:00</td></tr>
+                </table>
+                <div class="section-label">Details</div>
+                <p>User with role 'user' received HTTP 403 for /api/admin/secure (required role: 'admin'). Role enforcement appears to be working.</p>
+                <div class="section-label">Evidence</div>
+                <pre><code>{
+  "caller_role": "user",
+  "error": "Access denied. Admin role required.",
+  "required_role": "admin"
+}</code></pre>
+                <div class="section-label">Classification Detail</div>
+                <pre><code>{}</code></pre>
+                <div class="section-label">Remediation</div>
+                <p class="remediation">Enforce server-side role and permission checks for every sensitive function or administrative endpoint. Deny access explicitly when the caller lacks the required role. Do not rely on UI-level hiding of admin controls.</p>
+            </div>
+
+  <div class="meta" style="margin-top:2rem; padding-top:1rem; border-top:1px solid #30363d;">
+    Scope: Local test lab — 127.0.0.1 only by default. &nbsp;|&nbsp;
+    Started: 2026-10-28T17:33:33.568554+00:00 &nbsp;|&nbsp;
+    Completed: 2026-10-28T17:33:33.997683+00:00
+  </div>
+</div>
+</body>
+</html>

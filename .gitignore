@@ -28,13 +28,10 @@ coverage.xml
 Thumbs.db
 desktop.ini
 
-# Reports — timestamped reports are generated, not committed
-# The fixed-name "latest" reports may be committed if desired,
-# but remove them from .gitignore if so.
-reports/*.json
-reports/*.html
-reports/*.csv
+# Reports — keep primary scan reports, ignore temp files and timestamped runs
 reports/*.tmp
+reports/scan_*.json
+reports/scan_*.html
 
 # Secrets — never commit these
 *.env

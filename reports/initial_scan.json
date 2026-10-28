@@ -1,0 +1,38 @@
+{
+  "project": "API Authorization Security Testing Framework",
+  "generated_at": "2026-10-14T11:56:39.086896+00:00",
+  "target": "http://127.0.0.1:5000",
+  "note": "Initial endpoint connectivity checks only. These results do not prove or rule out BOLA or BFLA.",
+  "results": [
+    {
+      "test_name": "API homepage",
+      "category": "connectivity",
+      "expected_status": 200,
+      "url": "http://127.0.0.1:5000/",
+      "status_code": 200,
+      "content_type": "application/json",
+      "body": "{\"environment\":\"local test lab\",\"project\":\"API Authorization Security Testing Framework\",\"status\":\"running\"}\n",
+      "status_matches_expectation": true
+    },
+    {
+      "test_name": "Sample document endpoint",
+      "category": "BOLA test fixture",
+      "expected_status": 200,
+      "url": "http://127.0.0.1:5000/api/documents/101",
+      "status_code": 200,
+      "content_type": "application/json",
+      "body": "{\"content\":\"Alice's private document\",\"document_id\":101,\"owner_id\":1}\n",
+      "status_matches_expectation": true
+    },
+    {
+      "test_name": "Admin function endpoint",
+      "category": "BFLA test fixture",
+      "expected_status": 200,
+      "url": "http://127.0.0.1:5000/api/admin",
+      "status_code": 200,
+      "content_type": "application/json",
+      "body": "{\"message\":\"Admin function accessed\",\"required_role\":\"admin\"}\n",
+      "status_matches_expectation": true
+    }
+  ]
+}
