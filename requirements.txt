@@ -1,0 +1,27 @@
+# API Authorization Security Testing Framework
+# requirements.txt — pinned to tested compatible versions
+
+Flask==3.1.3
+requests==2.34.2
+PyYAML==6.0.3
+
+# Flask dependencies
+blinker==1.9.0
+click==8.1.8
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+Werkzeug==3.1.3
+
+# HTTP / network dependencies
+certifi==2025.4.26
+charset-normalizer==3.4.2
+idna==3.10
+urllib3==2.4.0
+
+# Testing
+pytest==8.3.5
+pytest-cov==6.1.0
+
+# Colorized output (optional, used by pytest on Windows)
+colorama==0.4.6

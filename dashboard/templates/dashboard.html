@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Authorization Scanner — Dashboard</title>
+<link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">🔒</span>
+      <div class="brand-text">
+        <div class="brand-title">API Auth Scanner</div>
+        <div class="brand-sub">v2.0.0 · Local Test Lab</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#overview"      class="nav-item active" data-section="overview">📊 Overview</a>
+      <a href="#configuration" class="nav-item"        data-section="configuration">⚙️ Configuration</a>
+      <a href="#scan"          class="nav-item"        data-section="scan">▶️ Run Scan</a>
+      <a href="#findings"      class="nav-item"        data-section="findings">🔍 Findings</a>
+      <a href="#reports"       class="nav-item"        data-section="reports">📄 Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="api-status" id="apiStatus">
+        <span class="status-dot" id="apiStatusDot"></span>
+        <span id="apiStatusText">Checking API…</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+
+    <!-- ===================================================== -->
+    <!-- SECTION: Overview                                       -->
+    <!-- ===================================================== -->
+    <section class="section active" id="section-overview">
+      <div class="section-header">
+        <h1>Overview</h1>
+        <p>Automated API Authorization Security Testing Framework for detecting BOLA &amp; BFLA vulnerabilities.</p>
+      </div>
+
+      <div class="alert alert-warning">
+        ⚠️ <strong>Authorized use only.</strong> This framework targets
+        <code>127.0.0.1</code> (localhost) by default.
+        All testing must be conducted against systems you are authorized to test.
+      </div>
+
+      <!-- Summary cards -->
+      <div class="card-grid" id="summaryCards">
+        <div class="stat-card">
+          <div class="stat-num" id="statTotal">—</div>
+          <div class="stat-label">Total Tests</div>
+        </div>
+        <div class="stat-card vuln">
+          <div class="stat-num" id="statVuln">—</div>
+          <div class="stat-label">Potential Vulnerabilities</div>
+        </div>
+        <div class="stat-card safe">
+          <div class="stat-num" id="statSafe">—</div>
+          <div class="stat-label">Not Detected</div>
+        </div>
+        <div class="stat-card warn">
+          <div class="stat-num" id="statInconclusive">—</div>
+          <div class="stat-label">Inconclusive</div>
+        </div>
+        <div class="stat-card error">
+          <div class="stat-num" id="statErrors">—</div>
+          <div class="stat-label">Errors</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statSkipped">—</div>
+          <div class="stat-label">Skipped</div>
+        </div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-item">
+          <span class="info-label">Scan Status</span>
+          <span class="badge" id="scanStatusBadge">No scan yet</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Target</span>
+          <span id="targetDisplay" class="mono">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Last Updated</span>
+          <span id="lastUpdated">—</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">About This Framework</div>
+        <p>
+          This tool helps authorized penetration testers and developers identify potential
+          authorization weaknesses in REST APIs:
+        </p>
+        <ul>
+          <li><strong>BOLA</strong> — Broken Object Level Authorization: can a user access resources owned by another user?</li>
+          <li><strong>BFLA</strong> — Broken Function Level Authorization: can a lower-privileged user invoke admin functions?</li>
+        </ul>
+        <p style="margin-top:.75rem; color: var(--color-muted);">
+          Results are preliminary estimates. Manual validation by a qualified security professional is required
+          before treating any finding as a confirmed production vulnerability.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- SECTION: Configuration                                  -->
+    <!-- ===================================================== -->
+    <section class="section" id="section-configuration">
+      <div class="section-header">
+        <h1>Configuration</h1>
+        <p>Current scan configuration loaded from <code>config/scan_config.yaml</code>.</p>
+      </div>
+
+      <div id="configLoading" class="loading-state">Loading configuration…</div>
+      <div id="configError"   class="alert alert-error" style="display:none"></div>
+
+      <div id="configContent" style="display:none">
+        <div class="config-grid">
+          <div class="panel">
+            <div class="panel-title">Target &amp; Scope</div>
+            <table class="config-table">
+              <tr><td>Base URL</td>    <td id="cfgBaseUrl" class="mono"></td></tr>
+              <tr><td>Timeout</td>     <td id="cfgTimeout"></td></tr>
+              <tr><td>Retries</td>     <td id="cfgRetries"></td></tr>
+              <tr><td>Allowed Hosts</td><td id="cfgAllowedHosts"></td></tr>
+            </table>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Test Identities</div>
+            <div id="cfgIdentities"></div>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:1rem">
+          <div class="panel-title">Configured Endpoints (<span id="cfgEndpointCount">0</span>)</div>
+          <div id="cfgEndpoints"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- SECTION: Run Scan                                       -->
+    <!-- ===================================================== -->
+    <section class="section" id="section-scan">
+      <div class="section-header">
+        <h1>Run Scan</h1>
+        <p>Execute an authorization scan against the configured local test lab.</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Scan Controls</div>
+        <div class="scan-controls">
+          <label class="checkbox-label">
+            <input type="checkbox" id="dryRunToggle">
+            Dry run (show requests without sending them)
+          </label>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btnStartScan">▶ Start Scan</button>
+          </div>
+        </div>
+
+        <div id="scanProgress" class="scan-progress" style="display:none">
+          <div class="progress-header">
+            <span class="spinner"></span>
+            <span id="progressStatus">Scan running…</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+        </div>
+
+        <div id="scanResult" class="scan-result" style="display:none"></div>
+        <div id="scanError"  class="alert alert-error" style="display:none"></div>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
+        <div class="panel-title">Instructions</div>
+        <ol class="instructions">
+          <li>Ensure the local test lab API is running on port 5000:<br>
+              <code>python run.py --api</code></li>
+          <li>Click <strong>Start Scan</strong>. The scanner will test all configured endpoints.</li>
+          <li>View results in the <strong>Findings</strong> tab after the scan completes.</li>
+          <li>Download JSON or HTML reports from the <strong>Reports</strong> tab.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- SECTION: Findings                                       -->
+    <!-- ===================================================== -->
+    <section class="section" id="section-findings">
+      <div class="section-header">
+        <h1>Findings</h1>
+        <p>Authorization test results from the latest completed scan.</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <input type="text" id="searchFindings" placeholder="Search endpoint, ID, or details…" class="filter-input">
+        <select id="filterType"     class="filter-select">
+          <option value="">All Types</option>
+          <option value="BOLA">BOLA</option>
+          <option value="BFLA">BFLA</option>
+        </select>
+        <select id="filterStatus"   class="filter-select">
+          <option value="">All Statuses</option>
+          <option value="POTENTIAL VULNERABILITY">Potential Vulnerability</option>
+          <option value="NOT DETECTED">Not Detected</option>
+          <option value="INCONCLUSIVE">Inconclusive</option>
+          <option value="ERROR">Error</option>
+          <option value="SKIPPED">Skipped</option>
+        </select>
+        <select id="filterSeverity" class="filter-select">
+          <option value="">All Severities</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+        <button class="btn btn-secondary" id="btnApplyFilters">Apply</button>
+        <button class="btn btn-ghost"     id="btnClearFilters">Clear</button>
+      </div>
+
+      <div id="findingsLoading"  class="loading-state" style="display:none">Loading findings…</div>
+      <div id="findingsEmpty"    class="empty-state">Run a scan to see findings here.</div>
+      <div id="findingsError"    class="alert alert-error" style="display:none"></div>
+      <div id="findingsList"></div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- SECTION: Reports                                        -->
+    <!-- ===================================================== -->
+    <section class="section" id="section-reports">
+      <div class="section-header">
+        <h1>Reports</h1>
+        <p>Download scan reports in JSON or HTML format.</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Quick Download</div>
+        <div class="btn-row">
+          <a class="btn btn-secondary" href="/api/reports/latest/json" download>
+            ⬇ Latest JSON Report
+          </a>
+          <a class="btn btn-secondary" href="/api/reports/latest/html" download>
+            ⬇ Latest HTML Report
+          </a>
+          <button class="btn btn-ghost" id="btnRefreshReports">↺ Refresh</button>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
+        <div class="panel-title">All Reports</div>
+        <div id="reportsLoading" class="loading-state">Loading reports…</div>
+        <div id="reportsEmpty"   class="empty-state" style="display:none">No reports yet. Run a scan first.</div>
+        <div id="reportsList"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>

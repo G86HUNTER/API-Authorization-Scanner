@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Reports — timestamped reports are generated, not committed
+# The fixed-name "latest" reports may be committed if desired,
+# but remove them from .gitignore if so.
+reports/*.json
+reports/*.html
+reports/*.csv
+reports/*.tmp
+
+# Secrets — never commit these
+*.env
+.env
+*.secret
+secrets.yaml
+credentials.yaml
+
+# Logs
+*.log
+logs/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/

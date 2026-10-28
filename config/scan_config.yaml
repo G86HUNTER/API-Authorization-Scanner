@@ -1,0 +1,135 @@
+# ============================================================
+# API Authorization Security Testing Framework
+# Scan Configuration — Local Test Lab
+# ============================================================
+#
+# WARNING: This framework is for authorized security testing only.
+# The default configuration targets 127.0.0.1 (localhost) only.
+# Adding external hosts to allowed_hosts requires explicit approval.
+# Never commit real credentials, tokens, or secrets to this file.
+# ============================================================
+
+# Target base URL — must be in allowed_hosts
+base_url: "http://127.0.0.1:5000"
+
+# Allowlist of permitted target hostnames
+allowed_hosts:
+  - "127.0.0.1"
+  - "localhost"
+
+# Per-request timeout in seconds (max 60)
+timeout: 5
+
+# Retry attempts for transient failures (max 5, 0 = no retry)
+retries: 1
+
+# Report output directory (relative to project root)
+report_dir: "reports"
+
+# ============================================================
+# Test identities — local lab only, no real credentials
+# ============================================================
+identities:
+  - name: alice
+    id: 1
+    role: user
+
+  - name: bob
+    id: 2
+    role: user
+
+  - name: carol
+    id: 3
+    role: user
+
+  - name: admin
+    id: 4
+    role: admin
+
+# ============================================================
+# Endpoints to test
+# ============================================================
+endpoints:
+
+  # ----------------------------------------------------------
+  # BOLA Test 1: Vulnerable document endpoint
+  # Bob (user 2) attempts to access Alice's document (owned by user 1)
+  # Expected: POTENTIAL VULNERABILITY (no ownership check)
+  # ----------------------------------------------------------
+  - label: "Vulnerable Document Endpoint (BOLA)"
+    path: "/api/documents/{object_id}"
+    method: GET
+    vuln_type: BOLA
+    owner_id_field: owner_id
+    requester_id_field: requested_by
+    expected_policy: "Only the document owner or admin can access the document."
+    objects:
+      - id: 101
+        description: "Alice's document"
+      - id: 102
+        description: "Bob's document"
+    identity_pairs:
+      - owner: alice
+        attacker: bob
+      - owner: bob
+        attacker: alice
+
+  # ----------------------------------------------------------
+  # BOLA Test 2: Secure document endpoint (false-positive check)
+  # Bob (user 2) attempts to access Alice's document — should be DENIED
+  # Expected: NOT DETECTED (ownership enforced)
+  # ----------------------------------------------------------
+  - label: "Secure Document Endpoint (BOLA — should not detect)"
+    path: "/api/documents/secure/{object_id}"
+    method: GET
+    vuln_type: BOLA
+    owner_id_field: owner_id
+    requester_id_field: requested_by
+    expected_policy: "Only the document owner or admin can access the document."
+    objects:
+      - id: 101
+        description: "Alice's document (secure endpoint)"
+      - id: 102
+        description: "Bob's document (secure endpoint)"
+    identity_pairs:
+      - owner: alice
+        attacker: bob
+      - owner: bob
+        attacker: alice
+
+  # ----------------------------------------------------------
+  # BFLA Test 1: Vulnerable admin endpoint
+  # Bob (user role) accesses admin function — no role check
+  # Expected: POTENTIAL VULNERABILITY
+  # ----------------------------------------------------------
+  - label: "Vulnerable Admin Endpoint (BFLA)"
+    path: "/api/admin"
+    method: GET
+    vuln_type: BFLA
+    admin_identity: admin
+    required_role: admin
+    caller_role_field: caller_role
+    required_role_field: required_role
+    expected_policy: "Only users with 'admin' role can access this endpoint."
+    test_identities:
+      - bob
+      - alice
+      - carol
+
+  # ----------------------------------------------------------
+  # BFLA Test 2: Secure admin endpoint (false-positive check)
+  # Bob attempts to access secure admin — should be DENIED
+  # Expected: NOT DETECTED (role enforced)
+  # ----------------------------------------------------------
+  - label: "Secure Admin Endpoint (BFLA — should not detect)"
+    path: "/api/admin/secure"
+    method: GET
+    vuln_type: BFLA
+    admin_identity: admin
+    required_role: admin
+    caller_role_field: caller_role
+    required_role_field: required_role
+    expected_policy: "Only users with 'admin' role can access this endpoint."
+    test_identities:
+      - bob
+      - alice
