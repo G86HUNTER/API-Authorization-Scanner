@@ -54,9 +54,21 @@ API-Authorization-Scanner/
 │   ├── test_api.py          # Local lab API tests
 │   ├── test_routes.py       # Dashboard routes tests
 │   └── test_integration.py  # Full integration tests
-├── reports/                 # Generated scan reports (JSON + HTML)
-├── docs/                    # Documentation
+├── reports/                 # Security Scan Reports
+│   ├── authorization_scan.json # Comprehensive findings (JSON)
+│   ├── authorization_scan.html # Interactive visual report (HTML)
+│   └── initial_scan.json    # Baseline comparison report
+├── docs/                    # Internship & Architecture Documentation
+│   ├── architecture.md      # Architecture & system flow diagrams
+│   ├── user_guide.md        # CLI & Dashboard operator guide
+│   ├── testing.md           # 136-test QA verification suite
+│   ├── limitations.md       # Ethical boundaries & technical limits
+│   ├── PROJECT_REPORT.md    # 2-Page Formal Internship Project Report
+│   ├── PRESENTATION_SLIDES.md # 5-Slide PowerPoint presentation outline
+│   ├── presentation.pptx    # Complete 16:9 5-Slide PowerPoint Deck
+│   └── screenshots/         # Captured test execution & evidence screenshots
 ├── run.py                   # Application entry point
+├── upload_to_github.ps1     # Automated GitHub upload script
 ├── requirements.txt
 ├── .gitignore
 └── README.md
